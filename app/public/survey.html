@@ -9,7 +9,7 @@
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.0/chosen.css"> s
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.0/chosen.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.0/chosen.jquery.min.js"></script>
     <!-- Font Awesome -->
     <script src="https://use.fontawesome.com/94c07cb2c2.js"></script>
@@ -35,7 +35,7 @@
             <h3><strong>Question 1</strong></h3>
             <h4>Travel is vital to life.</h4>
             <div>
-                <select class="chosen-select" data-placeholder="Select an Option" id="select1">
+                <select class="chosen-select" data-placeholder="Select an Option" id="select0">
                     <option value></option>
                     <option value="1">1 (Strongly Disagree)</option>
                     <option value="2">2</option>
@@ -61,7 +61,7 @@
             <h3><strong>Question 3</strong></h3>
             <h4>Pets make life worth living.</h4>
             <div>
-                <select class="chosen-select" data-placeholder="Select an Option" id="select1">
+                <select class="chosen-select" data-placeholder="Select an Option" id="select2">
                     <option value></option>
                     <option value="1">1 (Strongly Disagree)</option>
                     <option value="2">2</option>
@@ -74,7 +74,7 @@
             <h3><strong>Question 4</strong></h3>
             <h4>One on one is better than many to one.</h4>
             <div>
-                <select class="chosen-select" data-placeholder="Select an Option" id="select1">
+                <select class="chosen-select" data-placeholder="Select an Option" id="select3">
                     <option value></option>
                     <option value="1">1 (Strongly Disagree)</option>
                     <option value="2">2</option>
@@ -87,7 +87,7 @@
             <h3><strong>Question 5</strong></h3>
             <h4>Helping others brings you great joy.</h4>
             <div>
-                <select class="chosen-select" data-placeholder="Select an Option" id="select1">
+                <select class="chosen-select" data-placeholder="Select an Option" id="select4">
                     <option value></option>
                     <option value="1">1 (Strongly Disagree)</option>
                     <option value="2">2</option>
@@ -100,7 +100,7 @@
             <h3><strong>Question 6</strong></h3>
             <h4>You believe in love, truth, and honesty.</h4>
             <div>
-                <select class="chosen-select" data-placeholder="Select an Option" id="select1">
+                <select class="chosen-select" data-placeholder="Select an Option" id="select5">
                     <option value></option>
                     <option value="1">1 (Strongly Disagree)</option>
                     <option value="2">2</option>
@@ -113,7 +113,7 @@
             <h3><strong>Question 7</strong></h3>
             <h4>Music provides the soundtrack for your life.</h4>
             <div>
-                <select class="chosen-select" data-placeholder="Select an Option" id="select1">
+                <select class="chosen-select" data-placeholder="Select an Option" id="select6">
                     <option value></option>
                     <option value="1">1 (Strongly Disagree)</option>
                     <option value="2">2</option>
@@ -126,7 +126,7 @@
             <h3><strong>Question 8</strong></h3>
             <h4>A rainy day can be fantastic.</h4>
             <div>
-                <select class="chosen-select" data-placeholder="Select an Option" id="select1">
+                <select class="chosen-select" data-placeholder="Select an Option" id="select7">
                     <option value></option>
                     <option value="1">1 (Strongly Disagree)</option>
                     <option value="2">2</option>
@@ -139,7 +139,7 @@
             <h3><strong>Question 9</strong></h3>
             <h4>Any food is great in the company of friends.</h4>
             <div>
-                <select class="chosen-select" data-placeholder="Select an Option" id="select1">
+                <select class="chosen-select" data-placeholder="Select an Option" id="select8">
                     <option value></option>
                     <option value="1">1 (Strongly Disagree)</option>
                     <option value="2">2</option>
@@ -152,7 +152,7 @@
             <h3><strong>Question 10</strong></h3>
             <h4>Dance parties rule!</h4>
             <div>
-                <select class="chosen-select" data-placeholder="Select an Option" id="select1">
+                <select class="chosen-select" data-placeholder="Select an Option" id="select9">
                     <option value></option>
                     <option value="1">1 (Strongly Disagree)</option>
                     <option value="2">2</option>
@@ -164,7 +164,7 @@
 
         </form>
         <br>
-        <button type="button" class="btn btn-primary btn-lg btn-block">
+        <button type="button" class="btn btn-primary btn-lg btn-block" id="submitSurvey">
             <h4><span class="fa fa-check-circle"></span> Submit</h4>
         </button>
     </div>
@@ -181,6 +181,43 @@
 
     <script type="text/javascript">
         $(".chosen-select").chosen();
+
+        $("#submitSurvey").on("click", function (event) {
+            event.preventDefault();
+
+            var scoresArray = [];
+            var goodScores = true;
+            for (var index = 0; index < 10; index++) {
+
+                if ($("#select" + index).val()) {
+                    scoresArray.push(parseInt($("#select" + index).val()));
+                } else {
+                    goodScores = false;
+                    break;
+                }
+            }
+            if ($("#surveyName").val() && $("#surveyPhoto").val() && goodScores) {
+
+                var newFriend = {
+                    name: $("#surveyName").val().trim(),
+                    photo: $("#surveyPhoto").val().trim(),
+                    scores: scoresArray
+                };
+                console.log("new name " + newFriend.name);
+                console.log("new photo " + newFriend.photo);
+                console.log("new scores " + newFriend.scores);
+
+                $.post("/api/friends", newFriend)
+                    .done(function (data) {
+                        console.log(" friend " + data);
+                        alert("Friend Added");
+                    });
+
+            } else {
+                alert("Please answer all questions.");
+            }
+
+        });
     </script>
 </body>
 
