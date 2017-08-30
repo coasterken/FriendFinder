@@ -22,18 +22,44 @@ module.exports = function (app) {
 
         console.log(newFriend);
 
-        friendsArray.push(newFriend);
+        if (friendsArray.length === 0) {
+            res.json(false);
+            break;
+        } else {
 
-        fs.writeFile(path.join(__dirname, "../data", "friends.js"), JSON.stringify(friendsArray), function (err) {
+            var total = 0;
+            var compareArray = [];
+            compareDiff = 99999;
 
-            if (err) {
-                return console.log(err);
-            };
-        });
+            function Friend(name, photo) {
+                this.name = name;
+                this.photo = photo;
+            }
 
-        console.log(friendsArray)
+            for (var index = 0; index < friendsArray.length; index++) {
+                for (var index2 = 0; index2 < newFriend.scores.length; index2++) {
+                    var difference = Math.abs(newFriend.scores[index2] - friendsArray[index].scores[index2]);
+                    total += difference;
+                }
+                if (total < compareDiff) {
+                    compareDiff  = total; 
+                    var compFriend = new Friend(friendsArray[index].name, friendsArray[index].photo);
+                }
+            }
 
-        res.json(newFriend);
+            friendsArray.push(newFriend);
+
+            fs.writeFile(path.join(__dirname, "../data", "friends.js"), JSON.stringify(friendsArray), function (err) {
+
+                if (err) {
+                    return console.log(err);
+                };
+            });
+
+            console.log(compFriend);
+
+            res.json(compFriend);
+        }
     });
-    
+
 }
