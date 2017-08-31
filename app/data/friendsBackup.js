@@ -30,20 +30,4 @@
     "name": "Betty Boop",
     "photo": "http://www.cartoon-clipart.co/amp/images/betty-boop10.png",
     "scores": ["2", "3", "4", "2", "4", "5", "1", "3", "4", "5"]
-}, {
-    "name": "Homer Simpson",
-    "photo": "http://list.lisimg.com/image/1327069/500.jpg",
-    "scores": ["1", "2", "3", "4", "5", "1", "2", "3", "4", "5"]
-}, {
-    "name": "Bender",
-    "photo": "https://cdn.pastemagazine.com/www/blogs/lists/2010/05/13/bender.jpg",
-    "scores": ["5", "4", "3", "2", "1", "5", "4", "3", "2", "1"]
-}, {
-    "name": "Snoopy",
-    "photo": "https://cdn.pastemagazine.com/www/blogs/lists/2010/05/11/snoopy.jpg",
-    "scores": ["2", "4", "3", "2", "3", "4", "5", "1", "2", "3"]
-}, {
-    "name": "Taz",
-    "photo": "https://i.pinimg.com/originals/d2/b8/17/d2b8170741c33ee9ef49b877824eb5c4.jpg",
-    "scores": ["5", "5", "5", "5", "5", "5", "5", "5", "5", "5"]
 }]

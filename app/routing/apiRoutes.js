@@ -5,7 +5,9 @@ var fs = require("fs");
 var friendsArray = [];
 
 fs.readFile(path.join(__dirname, "../data", "friends.js"), 'utf8', function (err, data) {
-    friendsArray = JSON.parse(data);
+    if (data) {
+        friendsArray = JSON.parse(data);
+    };
 });
 
 module.exports = function (app) {
@@ -18,17 +20,9 @@ module.exports = function (app) {
     // Create New Characters - takes in JSON input
     app.post("/api/friends", function (req, res) {
         var newFriend = req.body;
-        console.log(req)
 
-        console.log(newFriend);
+        if (friendsArray.length > 0) {
 
-        if (friendsArray.length === 0) {
-            res.json(false);
-            break;
-        } else {
-
-            var total = 0;
-            var compareArray = [];
             compareDiff = 99999;
 
             function Friend(name, photo) {
@@ -37,29 +31,29 @@ module.exports = function (app) {
             }
 
             for (var index = 0; index < friendsArray.length; index++) {
+                var total = 0;
                 for (var index2 = 0; index2 < newFriend.scores.length; index2++) {
                     var difference = Math.abs(newFriend.scores[index2] - friendsArray[index].scores[index2]);
                     total += difference;
                 }
                 if (total < compareDiff) {
-                    compareDiff  = total; 
+                    compareDiff = total;
                     var compFriend = new Friend(friendsArray[index].name, friendsArray[index].photo);
+                    // console.log("compare diff " + compareDiff);
+                    // console.log("compFriend " + compFriend);
                 }
             }
-
-            friendsArray.push(newFriend);
-
-            fs.writeFile(path.join(__dirname, "../data", "friends.js"), JSON.stringify(friendsArray), function (err) {
-
-                if (err) {
-                    return console.log(err);
-                };
-            });
-
-            console.log(compFriend);
-
             res.json(compFriend);
+        } else {
+            res.send(false);
         }
-    });
+        friendsArray.push(newFriend);
 
+        fs.writeFile(path.join(__dirname, "../data", "friends.js"), JSON.stringify(friendsArray), function (err) {
+
+            if (err) {
+                return console.log(err);
+            };
+        });
+    });
 }

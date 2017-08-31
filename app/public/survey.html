@@ -25,7 +25,7 @@
         <h2>Survey Questions</h2>
         <hr>
         <h3><strong>About You</strong></h3>
-        <form>
+        <form id="myForm">
             <h4>Name (Required)</h4>
             <input type="text" id="surveyName" class="form-control" required>
             <br>
@@ -172,12 +172,36 @@
     <footer>
         <div class="container">
             <p>
-                <a href="/api/friends">API Friends List</a>
+                <a href="/api/friends" target="_blank">API Friends List</a>
                 <span> | </span>
-                <a href="https://github.com/coasterken/FriendFinder">GitHub Repo</a>
+                <a href="https://github.com/coasterken/FriendFinder" target="_blank">GitHub Repo</a>
+                <span> | </span>
+                <a href="/">Home</a>
             </p>
         </div>
     </footer>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Your New Friend</h4>
+                </div>
+                <div class="modal-body">
+                    <h2 id="friendName"></h2>
+                    <img id="friendPhoto" src="" alt="friend" style="width:300px;height:400px;">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
     <script type="text/javascript">
         $(".chosen-select").chosen();
@@ -203,14 +227,21 @@
                     photo: $("#surveyPhoto").val().trim(),
                     scores: scoresArray
                 };
-                console.log("new name " + newFriend.name);
-                console.log("new photo " + newFriend.photo);
-                console.log("new scores " + newFriend.scores);
+                // console.log("new name " + newFriend.name);
+                // console.log("new photo " + newFriend.photo);
+                // console.log("new scores " + newFriend.scores);
 
                 $.post("/api/friends", newFriend)
                     .done(function (data) {
-                        console.log(" friend " + data);
-                        alert("Friend Added");
+                        if (data === false) {
+                            $("#friendName").text(
+                                "You are the first finder.  Please try again later for a match.")
+                            $('#myModal').modal('toggle');
+                        } else {
+                            $("#friendName").text(data.name);
+                            $("#friendPhoto").attr("src", data.photo);
+                            $('#myModal').modal('toggle');
+                        };
                     });
 
             } else {
